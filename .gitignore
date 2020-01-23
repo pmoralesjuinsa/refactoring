@@ -5,3 +5,5 @@
 04-naming/vendor
 05_old-school/vendor
 05_old-school/phpunit.phar
+/03-more-refactoring/DockerRefact/
+/03-more-refactoring/composer.lock
