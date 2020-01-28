@@ -8,12 +8,6 @@ class CatApi
 {
     protected $created_X_seconds_ago = 3;
     protected $xml_random_cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
-    protected $cat_url;
-
-    function __construct()
-    {
-        $this->cat_url = "";
-    }
 
     public function getRandomImage()
     {
@@ -34,9 +28,9 @@ class CatApi
         }
     }
 
-    function checkFileExists()
+    public function checkFileExists()
     {
-        $responseXml = @file_get_contents($this->xml_random_cat_url);
+        $responseXml = $this->getCatXML();
 
         if (!$responseXml) {
             // the cat API is down or something
@@ -46,13 +40,18 @@ class CatApi
         return $responseXml;
     }
 
-    function getCatGifUrl($id)
+    public function getCatXML()
+    {
+        return @file_get_contents($this->xml_random_cat_url);
+    }
+
+    public function getCatGifUrl($id)
     {
 
         return $this->cat_url."&image_id=".$id;
     }
 
-    function getRandomCatGifUrl()
+    public function getRandomCatGifUrl()
     {
         return $this->cat_url;
     }
