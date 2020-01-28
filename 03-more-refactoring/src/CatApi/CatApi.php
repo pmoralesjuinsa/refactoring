@@ -7,7 +7,13 @@ use Core\Tools;
 class CatApi
 {
     protected $created_X_seconds_ago = 3;
-    protected $cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
+    protected $xml_random_cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
+    protected $cat_url;
+
+    function __construct()
+    {
+        $this->cat_url = "";
+    }
 
     public function getRandomImage()
     {
@@ -30,7 +36,7 @@ class CatApi
 
     function checkFileExists()
     {
-        $responseXml = @file_get_contents($this->cat_url);
+        $responseXml = @file_get_contents($this->xml_random_cat_url);
 
         if (!$responseXml) {
             // the cat API is down or something
@@ -42,11 +48,12 @@ class CatApi
 
     function getCatGifUrl($id)
     {
-        return "www.google.es";
+
+        return $this->cat_url."&image_id=".$id;
     }
 
     function getRandomCatGifUrl()
     {
-        return "www.google.com";
+        return $this->cat_url;
     }
 }
