@@ -44,7 +44,8 @@ class CatApi
         try {
             $responseElement = new \SimpleXMLElement($responseXml);
         } catch (Exception $exception) {
-            $responseElement = 'http://cdn.my-cool-website.com/default.jpg';
+            $responseElement = new \stdClass();
+            $responseElement->data->images[0]->image->url = 'http://localhost/default.jpg';
         }
 
         return $responseElement;
