@@ -6,10 +6,11 @@ use Core\Tools;
 
 class CatApi
 {
+    protected $created_X_seconds_ago = 3;
 
     public function getRandomImage()
     {
-        if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > 3) {
+        if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > $this->created_X_seconds_ago) {
 
             $responseXml = $this->check_file_exists();
 
