@@ -18,10 +18,10 @@ class CatApi
 
             file_put_contents(
                 __DIR__ . Tools::$image_dir,
-                (string)$responseElement->data->images[0]->image->url
+                (string)$this->extractImageUrlFromXml($responseElement)
             );
 
-            return (string)$responseElement->data->images[0]->image->url;
+            return (string)$this->extractImageUrlFromXml($responseElement);
         } else {
             return file_get_contents(__DIR__ . Tools::$image_dir);
         }
@@ -47,15 +47,16 @@ class CatApi
 
     public function getCatGifUrl($id)
     {
-        $responseXml = $this->getCatXML($id);
-
-        return $responseXml->data->images[0]->image->url;
+        return $this->extractImageUrlFromXml($this->getCatXML($id));
     }
 
     public function getRandomCatGifUrl()
     {
-        $responseXml = $this->getCatXML();
+        return $this->extractImageUrlFromXml($this->getCatXML());
+    }
 
-        return $responseXml->data->images[0]->image->url;
+    public function extractImageUrlFromXml($xml)
+    {
+        return $xml->data->images[0]->image->url;
     }
 }
