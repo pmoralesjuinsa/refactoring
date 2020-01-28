@@ -3,7 +3,6 @@
 namespace CatApi;
 
 use Core\Tools;
-use MongoDB\Driver\Exception\Exception;
 
 class CatApi
 {
@@ -43,7 +42,7 @@ class CatApi
     {
         try {
             $responseElement = new \SimpleXMLElement($responseXml);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $responseElement = new \stdClass();
             $responseElement->data->images[0]->image->url = 'http://localhost/default.jpg';
         }
