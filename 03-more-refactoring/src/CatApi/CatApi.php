@@ -36,10 +36,15 @@ class CatApi
             $responseXml = @file_get_contents($this->xml_random_cat_url);
         }
 
+        return $this->convertToValidXml($responseXml);
+    }
+
+    public function convertToValidXml($responseXml)
+    {
         try {
             $responseElement = new \SimpleXMLElement($responseXml);
         } catch (Exception $exception) {
-            return 'http://cdn.my-cool-website.com/default.jpg';
+            $responseElement = 'http://cdn.my-cool-website.com/default.jpg';
         }
 
         return $responseElement;
