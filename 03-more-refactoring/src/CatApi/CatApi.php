@@ -12,7 +12,7 @@ class CatApi
     {
         if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > 3) {
 
-            $responseXml = $this->checkFileExists();
+            $responseXml = $this->check_file_exists();
 
             $responseElement = new \SimpleXMLElement($responseXml);
 
@@ -27,7 +27,7 @@ class CatApi
         }
     }
 
-    function checkFileExists()
+    function check_file_exists()
     {
         $responseXml = @file_get_contents('http://thecatapi.com/api/images/get?format=xml&type=jpg');
 

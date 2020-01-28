@@ -3,12 +3,13 @@
 namespace CatApi\Tests;
 
 use CatApi\CatApi;
+use Core\Tools;
 
 class CatApiTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
-        @unlink(__DIR__ . '/../../cache/random');
+        @unlink(__DIR__ . Tools::$image_dir);
     }
 
     /** @test */
