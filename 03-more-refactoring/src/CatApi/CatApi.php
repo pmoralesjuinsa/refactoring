@@ -40,19 +40,28 @@ class CatApi
         return $responseXml;
     }
 
-    public function getCatXML()
+    public function getCatXML($id='')
     {
+        if($id != '') {
+            return @file_get_contents($this->xml_random_cat_url."&image_id=".$id);
+        }
+
         return @file_get_contents($this->xml_random_cat_url);
     }
 
     public function getCatGifUrl($id)
     {
+        $responseXml = $this->getCatXML($id);
+        $responseElement = new \SimpleXMLElement($responseXml);
 
-        return $this->cat_url."&image_id=".$id;
+        return $responseElement->data->images[0]->image->url;
     }
 
     public function getRandomCatGifUrl()
     {
-        return $this->cat_url;
+        $responseXml = $this->getCatXML();
+        $responseElement = new \SimpleXMLElement($responseXml);
+
+        return $responseElement->data->images[0]->image->url;
     }
 }
