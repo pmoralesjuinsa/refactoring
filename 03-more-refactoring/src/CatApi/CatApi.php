@@ -38,4 +38,14 @@ class CatApi
 
         return $responseXml;
     }
+
+    function getCatGifUrl($id)
+    {
+        return "www.google.es";
+    }
+
+    function getRandomCatGifUrl()
+    {
+        return "www.google.com";
+    }
 }
