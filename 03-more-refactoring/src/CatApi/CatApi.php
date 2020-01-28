@@ -7,12 +7,13 @@ use Core\Tools;
 class CatApi
 {
     protected $created_X_seconds_ago = 3;
+    protected $cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
 
     public function getRandomImage()
     {
         if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > $this->created_X_seconds_ago) {
 
-            $responseXml = $this->check_file_exists();
+            $responseXml = $this->checkFileExists();
 
             $responseElement = new \SimpleXMLElement($responseXml);
 
@@ -27,9 +28,9 @@ class CatApi
         }
     }
 
-    function check_file_exists()
+    function checkFileExists()
     {
-        $responseXml = @file_get_contents('http://thecatapi.com/api/images/get?format=xml&type=jpg');
+        $responseXml = @file_get_contents($this->cat_url);
 
         if (!$responseXml) {
             // the cat API is down or something
