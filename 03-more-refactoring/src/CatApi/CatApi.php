@@ -2,28 +2,29 @@
 
 namespace CatApi;
 
-use Core\Tools;
-
 class CatApi
 {
+    public $image_dir = "/../../cache/random";
     protected $created_X_seconds_ago = 3;
     protected $xml_random_cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
 
     public function getRandomImage()
     {
-        if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > $this->created_X_seconds_ago) {
+        if (!file_exists(__DIR__ . $this->image_dir) ||
+            time() - filemtime(__DIR__ . $this->image_dir) > $this->created_X_seconds_ago) {
 
             $responseElement = $this->getCatXML();
 
             file_put_contents(
-                __DIR__ . Tools::$image_dir,
+                __DIR__ . $this->image_dir,
                 (string)$this->extractImageUrlFromXml($responseElement)
             );
 
             return (string)$this->extractImageUrlFromXml($responseElement);
-        } else {
-            return file_get_contents(__DIR__ . Tools::$image_dir);
         }
+
+        return file_get_contents(__DIR__ . $this->image_dir);
+
     }
 
     public function getCatXML($id='')
@@ -43,7 +44,7 @@ class CatApi
         try {
             $responseElement = new \SimpleXMLElement($responseXml);
         } catch (\Exception $exception) {
-            $responseElement = new \stdClass();
+            $responseElement = new \SimpleXMLElement("<body></body>");
             $responseElement->data->images[0]->image->url = 'http://localhost/default.jpg';
         }
 

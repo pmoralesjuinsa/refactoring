@@ -3,13 +3,13 @@
 namespace CatApi\Tests;
 
 use CatApi\CatApi;
-use Core\Tools;
 
 class CatApiTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
-        @unlink(__DIR__ . Tools::$image_dir);
+        $catApi = new CatApi();
+        @unlink(__DIR__ . $catApi->image_dir);
     }
 
     /** @test */
@@ -36,4 +36,79 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($firstUrl, $secondUrl);
         $this->assertNotSame($secondUrl, $thirdUrl);
     }
+
+    /** @test */
+    public function get_a_valid_url_with_an_id()
+    {
+        $catApi = new CatApi();
+
+        $url_one = $catApi->getCatGifUrl('vd');
+
+        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
+    }
+
+    /** @test */
+    public function get_a_valid_url_with_an_id_and_compare_if_is_the_correct_one()
+    {
+        $catApi = new CatApi();
+
+        $url_one = $catApi->getCatGifUrl('vd');
+        $url__one_must_be_target = "https://30.media.tumblr.com/tumblr_m1pgmg9Fe61qjahcpo1_500.jpg";
+
+        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
+        $this->assertEquals($url__one_must_be_target, $url_one);
+    }
+
+    /** @test */
+    public function get_a_valid_url_with_an_id_and_compare_if_is_wrong()
+    {
+        $catApi = new CatApi();
+
+        $url_one = $catApi->getCatGifUrl('vd');
+        $url__one_must_be_target = "wrong url";
+
+        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
+        $this->assertNotEquals($url__one_must_be_target, $url_one);
+    }
+
+    /** @test */
+    public function compare_two_urls_with_same_method_with_differents_url_result()
+    {
+        $catApi = new CatApi();
+        $url_one = $catApi->getRandomCatGifUrl();
+        $url_two = $catApi->getRandomCatGifUrl();
+
+        $this->assertNotSame($url_one, $url_two);
+    }
+
+    /** @test */
+    public function check_xml_conversion_of_a_url_result()
+    {
+        $catApi = new CatApi();
+        $response_xml = "
+                        <response>
+                            <data>
+                                <images>
+                                    <image>
+                                        <id>vd</id>
+                                        <url>https://30.media.tumblr.com/tumblr_m1pgmg9Fe61qjahcpo1_500.jpg</url>
+                                        <source_url>https://thecatapi.com/?image_id=vd</source_url>
+                                    </image>
+                                </images>
+                            </data>
+                        </response>";
+        $xml = $catApi->convertToValidXml($response_xml);
+
+        $this->assertEquals('https://30.media.tumblr.com/tumblr_m1pgmg9Fe61qjahcpo1_500.jpg', $xml->data->images[0]->image->url);
+    }
+
+    /** @test */
+    public function check_exception_at_xml_conversion_of_a_url_result_and_is_a_xml()
+    {
+        $catApi = new CatApi();
+        $xml = $catApi->convertToValidXml("cualquier cosa");
+
+        $this->assertEquals('http://localhost/default.jpg', $xml->data->images[0]->image->url);
+    }
+
 }
