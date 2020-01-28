@@ -2,13 +2,15 @@
 
 namespace CatApi;
 
+use Core\Tools;
+
 class CatApi
 {
     protected $image_dir = "/../../cache/random";
 
     public function getRandomImage()
     {
-        if (!file_exists(__DIR__ . $this->image_dir) || time() - filemtime(__DIR__ . $this->image_dir) > 3) {
+        if (!file_exists(__DIR__ . Tools::$image_dir) || time() - filemtime(__DIR__ . Tools::$image_dir) > 3) {
 
             $responseXml = $this->checkFileExists();
 
