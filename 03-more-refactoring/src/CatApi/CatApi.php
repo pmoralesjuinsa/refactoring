@@ -6,7 +6,6 @@ use Core\Tools;
 
 class CatApi
 {
-    protected $image_dir = "/../../cache/random";
 
     public function getRandomImage()
     {
@@ -17,13 +16,13 @@ class CatApi
             $responseElement = new \SimpleXMLElement($responseXml);
 
             file_put_contents(
-                __DIR__ . $this->image_dir,
+                __DIR__ . Tools::$image_dir,
                 (string)$responseElement->data->images[0]->image->url
             );
 
             return (string)$responseElement->data->images[0]->image->url;
         } else {
-            return file_get_contents(__DIR__ . $this->image_dir);
+            return file_get_contents(__DIR__ . Tools::$image_dir);
         }
     }
 
