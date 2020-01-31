@@ -4,26 +4,26 @@ namespace CatApi;
 
 class CatApi
 {
-    public $image_dir = "/../../cache/random";
-    protected $created_X_seconds_ago = 3;
-    protected $xml_random_cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
+    CONST IMAGE_DIR = "/../../cache/random";
+    CONST CREATED_THREE_SECONDS_AGO = 3;
+    CONST XML_RANDOM_CAT_URL = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
 
     protected function getRandomImage()
     {
-        if (!file_exists(__DIR__ . $this->image_dir) ||
-            time() - filemtime(__DIR__ . $this->image_dir) > $this->created_X_seconds_ago) {
+        if (!file_exists(__DIR__ . IMAGE_DIR) ||
+            time() - filemtime(__DIR__ . IMAGE_DIR) > CREATED_THREE_SECONDS_AGO) {
 
             $responseElement = $this->getCatXML();
 
             file_put_contents(
-                __DIR__ . $this->image_dir,
+                __DIR__ . IMAGE_DIR,
                 (string)$this->extractImageUrlFromXml($responseElement)
             );
 
             return (string)$this->extractImageUrlFromXml($responseElement);
         }
 
-        return file_get_contents(__DIR__ . $this->image_dir);
+        return file_get_contents(__DIR__ . IMAGE_DIR);
 
     }
 
@@ -31,9 +31,9 @@ class CatApi
     {
 
         if($id != '') {
-            $responseXml = @file_get_contents($this->xml_random_cat_url."&image_id=".$id);
+            $responseXml = @file_get_contents(XML_RANDOM_CAT_URL."&image_id=".$id);
         } else {
-            $responseXml = @file_get_contents($this->xml_random_cat_url);
+            $responseXml = @file_get_contents(XML_RANDOM_CAT_URL);
         }
 
         return $this->convertToValidXml($responseXml);
@@ -66,5 +66,3 @@ class CatApi
         return $xml->data->images[0]->image->url;
     }
 }
-
-//TODO modificar las propiedades a CONSTANTES EN MAYUSCULAS
