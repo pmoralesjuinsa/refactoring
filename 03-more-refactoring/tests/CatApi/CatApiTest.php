@@ -44,7 +44,7 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
 
         $url_one = $catApi->getCatGifUrl('vd');
 
-        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
+        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL));
     }
 
     /** @test */
@@ -55,20 +55,7 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
         $url_one = $catApi->getCatGifUrl('vd');
         $url__one_must_be_target = "https://30.media.tumblr.com/tumblr_m1pgmg9Fe61qjahcpo1_500.jpg";
 
-        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
         $this->assertEquals($url__one_must_be_target, $url_one);
-    }
-
-    /** @test */
-    public function get_a_valid_url_with_an_id_and_compare_if_is_wrong()
-    {
-        $catApi = new CatApi();
-
-        $url_one = $catApi->getCatGifUrl('vd');
-        $url__one_must_be_target = "wrong url";
-
-        $this->assertTrue(filter_var($url_one, FILTER_VALIDATE_URL) !== false);
-        $this->assertNotEquals($url__one_must_be_target, $url_one);
     }
 
     /** @test */
@@ -112,3 +99,5 @@ class CatApiTest extends \PHPUnit_Framework_TestCase
     }
 
 }
+
+//TODO crear clase Wrapper que exponga los métodos protected para poder pasar los  tests

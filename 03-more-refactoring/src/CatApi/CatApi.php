@@ -8,7 +8,7 @@ class CatApi
     protected $created_X_seconds_ago = 3;
     protected $xml_random_cat_url = 'http://thecatapi.com/api/images/get?format=xml&type=jpg';
 
-    public function getRandomImage()
+    protected function getRandomImage()
     {
         if (!file_exists(__DIR__ . $this->image_dir) ||
             time() - filemtime(__DIR__ . $this->image_dir) > $this->created_X_seconds_ago) {
@@ -27,7 +27,7 @@ class CatApi
 
     }
 
-    public function getCatXML($id='')
+    protected function getCatXML($id='')
     {
 
         if($id != '') {
@@ -39,7 +39,7 @@ class CatApi
         return $this->convertToValidXml($responseXml);
     }
 
-    public function convertToValidXml($responseXml)
+    protected function convertToValidXml($responseXml)
     {
         try {
             $responseElement = new \SimpleXMLElement($responseXml);
@@ -61,8 +61,10 @@ class CatApi
         return $this->extractImageUrlFromXml($this->getCatXML());
     }
 
-    public function extractImageUrlFromXml($xml)
+    protected function extractImageUrlFromXml($xml)
     {
         return $xml->data->images[0]->image->url;
     }
 }
+
+//TODO modificar las propiedades a CONSTANTES EN MAYUSCULAS
